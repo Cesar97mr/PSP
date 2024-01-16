@@ -4,10 +4,8 @@ public class PrincipalProductorConsumidor {
 
 	public static void main(String[] args) {
 		
-	
-		
+
 		try {
-			
 			Buffer b = new Buffer(6);
 			Productor p = new Productor(b);
 			Consumidor c = new Consumidor(b);

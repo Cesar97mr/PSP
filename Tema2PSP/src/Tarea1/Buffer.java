@@ -1,59 +1,56 @@
 package Tarea1;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+//Creamos la clase Buffer con nuestros atributos
 public class Buffer {
+	private boolean bufferLleno;
+	private boolean bufferVacio;
 	private char[] buffer;
-	private int siguiente;
-	private boolean estaLlena;
-	private boolean estaVacia;
-	
+	private int next;
+
+	//Constructor con tamaño por parametro para poder establecerlo en el main
 	public Buffer(int tamanio) {
 		this.buffer = new char[tamanio];
-		this.siguiente = 0;
-		this.estaLlena = false;
-		this.estaVacia = false;
+		this.next = 0;
+		this.bufferLleno = false;
+		this.bufferVacio = false;
 	}
 	
 	public synchronized char consumir() {
 		
-		while(this.estaVacia) {
+		while(this.bufferVacio) {
 			try {
 				wait();
-			} catch (InterruptedException ex) {
-				// TODO Auto-generated catch block
-				Logger.getLogger(Buffer.class.getName()).log(Level.SEVERE, null, ex);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 		
-		this.siguiente--;
+		this.next--;
 		
-		if(this.siguiente == 0) {
-			this.estaVacia = true;
+		if(this.next == 0) {
+			this.bufferVacio = true;
 		}
 		
 		notifyAll();
 		
-		return this.buffer[this.siguiente];
+		return this.buffer[this.next];
 	}
 	
 	public synchronized void producir(char c) {
-		while(this.estaLlena) {
+		while(this.bufferLleno) {
 			try {
 				wait();
-			} catch (InterruptedException ex) {
-				// TODO Auto-generated catch block
-				Logger.getLogger(Buffer.class.getName()).log(Level.SEVERE, null, ex);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
-		this.buffer[this.siguiente] = c;
+		this.buffer[this.next] = c;
 		
-		this.siguiente++;
-		this.estaVacia = false;
+		this.next++;
+		this.bufferVacio = false;
 		
-		if(this.siguiente == this.buffer.length) {
-			this.estaLlena = true;
+		if(this.next == this.buffer.length) {
+			this.bufferLleno = true;
 		}
 		
 		notifyAll();

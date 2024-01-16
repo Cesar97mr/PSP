@@ -1,8 +1,5 @@
 package Tarea1;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class Productor extends Thread{
 	
 	private Buffer buffer;
@@ -26,8 +23,8 @@ public class Productor extends Thread{
 			System.out.println("Depositado el caracter " + c + " del buffer");
 			sleep((long)(Math.random() * 4000));
 			
-		}catch (InterruptedException ex) {
-			Logger.getLogger(Productor.class.getName()).log(Level.SEVERE, null, ex);
+		}catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 	}
